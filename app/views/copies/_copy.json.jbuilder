@@ -1,0 +1,12 @@
+json.extract! resource,
+              :asking_currency,
+              :asking_price,
+              :condition,
+              :created_at,
+              :game_name,
+              :is_borrowable,
+              :is_playable,
+              :is_purchaseable,
+              :is_tradeable,
+              :updated_at,
+              :version_name

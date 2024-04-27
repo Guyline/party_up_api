@@ -1,3 +1,3 @@
 json.partial! 'index',
-              attributes_partial: 'users/user',
+              attributes_partial: 'v1/users/user',
               resources: @users

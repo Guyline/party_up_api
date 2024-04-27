@@ -3,6 +3,6 @@ class V1::Game::VersionsController < V1::Game::BaseController
     @versions = @game.versions
                      .page(@page)
                      .per(@per)
-    render 'versions/index'
+    render 'v1/versions/index'
   end
 end

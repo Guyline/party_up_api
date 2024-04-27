@@ -3,6 +3,7 @@ class V1::User::OwnershipsController < V1::User::BaseController
     @ownerships = @user.ownerships
                        .page(@page)
                        .per(@per_page)
-    render 'ownerships/index'
+                       .order({ @sort => @order })
+    render 'v1/ownerships/index'
   end
 end

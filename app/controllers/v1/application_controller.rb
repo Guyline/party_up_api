@@ -6,5 +6,7 @@ class V1::ApplicationController < ActionController::API
   def set_pagination_params
     @page = params[:page]
     @per_page = params[:per_page]
+    @sort = params.fetch(:sort, :created_at)
+    @order = params.fetch(:order, :asc)
   end
 end

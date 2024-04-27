@@ -1,9 +1,11 @@
 class V1::Version::CopiesController < V1::Version::BaseController
   def index
     @copies = @version.copies
+                      .include(:game, :version)
                       .page(@page)
                       .per(@per_page)
-    render 'copies/index'
+                      .order({ @sort => @order })
+    render 'v1/copies/index'
   end
 
   def create

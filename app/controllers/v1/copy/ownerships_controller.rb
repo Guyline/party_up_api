@@ -3,7 +3,8 @@ class V1::Copy::OwnershipsController < V1::Copy::BaseController
     @ownerships = @copy.ownerships
                        .page(@page)
                        .per(@per_page)
-    render 'ownerships/index'
+                       .order({ @sort => @order })
+    render 'v1/ownerships/index'
   end
 
   def create

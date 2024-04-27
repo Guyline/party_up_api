@@ -3,7 +3,7 @@ default: &default
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: party_up
-  password: <%= Rails.application.credentials.database_password %>
+  password: <%= Rails.application.credentials.dig(:database, :password) %>
   host: localhost
   port: 3306
 

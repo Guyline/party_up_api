@@ -3,6 +3,7 @@ class V1::Game::OwnersController < V1::Game::BaseController
     @users = @game.owners
                   .page(@page)
                   .per(@per_page)
-    render 'users/index'
+                  .order({ @sort => @order })
+    render 'v1/users/index'
   end
 end

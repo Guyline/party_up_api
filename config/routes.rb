@@ -26,9 +26,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :games, only: %i[index show] do
-        scope module: :game do
+      resources :expansions, only: %i[index show] do
+        scope module: :expansion do
           resources :copies, only: %i[index create]
+          resources :expandables, only: [:index]
+          resources :expansions, only: [:index]
           resources :holders, only: [:index]
           resources :owners, only: [:index]
           resources :ownerships, only: [:index]
@@ -36,16 +38,48 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :ownerships, only: %i[index show destroy]
+      resources :games, only: %i[index show] do
+        scope module: :game do
+          resources :copies, only: %i[index create]
+          resources :expansions, only: [:index]
+          resources :holders, only: [:index]
+          resources :owners, only: [:index]
+          resources :ownerships, only: [:index]
+          resources :versions, only: [:index]
+        end
+      end
 
-      resources :users, only: %i[index show] do
-        scope module: :user do
+      resources :holders do
+        scope module: :holder do
           resources :copies, only: [:index]
-          resources :held_games, only: [:index]
-          resources :owned_games, only: [:index]
+          resources :expansions, only: [:index]
+          resources :games, only: [:index]
+        end
+      end
+
+      resources :owners do
+        scope module: :owner do
+          resources :copies, only: [:index]
+          resources :expansions, only: [:index]
+          resources :games, only: [:index]
           resources :ownerships, only: [:index]
         end
       end
+
+      resources :ownerships, only: %i[index show destroy]
+
+      resources :playables do
+        scope module: :playable do
+          resources :copies, only: %i[index create]
+          resources :expansions, only: [:index]
+          resources :holders, only: %i[index]
+          resources :owners, only: [:index]
+          resources :ownerships, only: [:index]
+          resources :versions, only: [:index]
+        end
+      end
+
+      resources :users, only: %i[index show]
 
       resources :versions, only: %i[index show] do
         scope module: :version do

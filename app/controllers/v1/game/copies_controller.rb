@@ -1,9 +1,7 @@
 class V1::Game::CopiesController < V1::Game::BaseController
-  before_action :set_game
-
   def index
     @copies = @game.copies
-                   .includes(:game, :version)
+                   .includes(:playable, :version)
                    .page(@page)
                    .per(@per_page)
                    .order({ @sort => @order })

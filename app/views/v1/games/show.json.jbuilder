@@ -1,3 +1,3 @@
 json.partial! 'show',
-              attributes_partial: 'v1/games/game',
+              attributes_partial: 'v1/playables/playable',
               resource: @game

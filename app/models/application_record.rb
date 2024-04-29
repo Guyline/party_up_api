@@ -9,8 +9,14 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.api_relationships
     belongs_to_associations = reflect_on_all_associations(:belongs_to)
-    belongs_to_associations.map do |association|
-      [association.name, association.klass.name.downcase.pluralize]
-    end.to_h
+    belongs_to_associations.map(&:name).sort!
+  end
+
+  def self.readable_type
+    name.demodulize.underscore
+  end
+
+  def readable_type
+    self.class.readable_type
   end
 end

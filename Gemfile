@@ -7,16 +7,17 @@ gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
 
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3', '~> 1.4'
-gem 'mysql2'
+gem 'mysql2', '~> 0.5.6'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '>= 5.0'
+gem 'puma', '~> 6.4'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem 'jbuilder'
+gem 'jbuilder', '~> 2.11'
 
-# Use Redis adapter to run Action Cable in production
+# Use Redis adapter to run Action Cable in productionn
 # gem "redis", ">= 4.0.1"
+gem 'redis', '~> 5.2'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -36,22 +37,24 @@ gem 'bootsnap', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
 
-gem 'devise'
+gem 'devise', '~> 4.9'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 
-gem 'discard'
-gem 'kaminari'
-gem 'rest-client'
+gem 'discard', '~> 1.3'
+gem 'kaminari', '~> 1.2'
+gem 'rest-client', '~> 2.1'
+
+gem 'sidekiq', '~> 7.2'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows]
-  gem 'dotenv-rails'
+  gem 'dotenv-rails', '~> 3.1'
 end
 
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'rubocop', require: false
+  gem 'rubocop', '~> 1.63', require: false
 end

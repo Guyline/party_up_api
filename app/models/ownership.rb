@@ -11,8 +11,8 @@ class Ownership < ApplicationRecord
            to: :owner,
            prefix: true,
            allow_nil: true
-  delegate :game_bgg_id,
-           :game_name,
+  delegate :playable_bgg_id,
+           :playable_name,
            :version_bgg_id,
            :version_name,
            to: :copy,

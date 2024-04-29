@@ -1,9 +1,9 @@
-class V1::User::OwnershipsController < V1::User::BaseController
+class V1::Expansion::HoldersController < V1::Expansion::BaseController
   def index
-    @ownerships = @user.ownerships
+    @users = @expansion.holders
                        .page(@page)
                        .per(@per_page)
                        .order({ @sort => @order })
-    render 'v1/ownerships/index'
+    render 'v1/users/index'
   end
 end

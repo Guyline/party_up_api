@@ -1,6 +1,7 @@
 json.extract! resource,
               :bgg_id,
               :created_at,
-              :game_name,
+              :playable_name,
+              :playable_type,
               :name,
               :updated_at

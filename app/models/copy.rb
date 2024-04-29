@@ -8,10 +8,14 @@ class Copy < ApplicationRecord
     CONDITION_UNKNOWN = 'unknown'.freeze
   ].freeze
 
+  after_initialize do |copy|
+    copy.condition ||= CONDITION_UNKNOWN
+  end
+
   validates :version_id,
             if: :version_id_changed?,
             inclusion: {
-              in: ->(copy) { copy.game&.versions&.pluck(:id) }
+              in: ->(copy) { copy.playable&.versions&.pluck(:id) }
             },
             allow_nil: true
   validates :condition,
@@ -31,17 +35,32 @@ class Copy < ApplicationRecord
             },
             allow_nil: true
 
-  belongs_to :game, required: true, inverse_of: :copies
-  belongs_to :holder, optional: true, class_name: 'User', inverse_of: :held_copies
-  belongs_to :version, optional: true, inverse_of: :copies
+  belongs_to :playable,
+             inverse_of: :copies,
+             required: true
+  belongs_to :holder,
+             class_name: 'User',
+             inverse_of: :held_copies,
+             optional: true
+  belongs_to :version,
+             inverse_of: :copies,
+             optional: true
 
   has_many :ownerships, inverse_of: :copy
   has_many :owners, through: :ownerships, source: :owner
 
-  delegate :name, :bgg_id, to: :version, prefix: true, allow_nil: true
-  delegate :name, :bgg_id, to: :game, prefix: true, allow_nil: true
+  delegate :name,
+           :bgg_id,
+           to: :version,
+           prefix: true,
+           allow_nil: true
+  delegate :name,
+           :bgg_id,
+           to: :playable,
+           prefix: true,
+           allow_nil: true
 
-  after_initialize do |copy|
-    copy.condition ||= CONDITION_UNKNOWN
+  def playable_type
+    playable&.readable_type
   end
 end

@@ -1,7 +1,7 @@
 class V1::Version::CopiesController < V1::Version::BaseController
   def index
     @copies = @version.copies
-                      .include(:game, :version)
+                      .include(:playable, :version)
                       .page(@page)
                       .per(@per_page)
                       .order({ @sort => @order })
@@ -10,7 +10,7 @@ class V1::Version::CopiesController < V1::Version::BaseController
 
   def create
     copy = @version.copies.create!(copy_params)
-    copy.game_id = @version.game_id
+    copy.playable = @version.playable
     copy.save!
 
     redirect_to copy

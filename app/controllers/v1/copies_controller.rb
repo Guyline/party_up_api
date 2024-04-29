@@ -1,6 +1,6 @@
 class V1::CopiesController < V1::ApplicationController
   def index
-    @copies = Copy.includes(:game, :version)
+    @copies = Copy.includes(:playable, :version, :holder)
                   .page(@page)
                   .per(@per_page)
                   .order({ @sort => @order })

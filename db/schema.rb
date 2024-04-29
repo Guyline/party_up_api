@@ -10,11 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_25_001259) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_27_063840) do
 # Could not dump table "copies" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
-
-# Could not dump table "games" because of following StandardError
 #   Unknown type 'uuid' for column 'id'
 
 # Could not dump table "identities" because of following StandardError
@@ -23,17 +20,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_25_001259) do
 # Could not dump table "ownerships" because of following StandardError
 #   Unknown type 'uuid' for column 'id'
 
+# Could not dump table "playable_expansions" because of following StandardError
+#   Unknown type 'uuid' for column 'playable_id'
+
+# Could not dump table "playables" because of following StandardError
+#   Unknown type 'uuid' for column 'id'
+
 # Could not dump table "users" because of following StandardError
 #   Unknown type 'uuid' for column 'id'
 
 # Could not dump table "versions" because of following StandardError
 #   Unknown type 'uuid' for column 'id'
 
-  add_foreign_key "copies", "games"
+  add_foreign_key "copies", "playables"
   add_foreign_key "copies", "users", column: "holder_id"
   add_foreign_key "copies", "versions"
   add_foreign_key "identities", "users"
   add_foreign_key "ownerships", "copies"
   add_foreign_key "ownerships", "users", column: "owner_id"
-  add_foreign_key "versions", "games"
+  add_foreign_key "playable_expansions", "playables"
+  add_foreign_key "playable_expansions", "playables", column: "expansion_id"
+  add_foreign_key "versions", "playables"
 end

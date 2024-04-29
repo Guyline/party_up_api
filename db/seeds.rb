@@ -24,7 +24,9 @@ user_attribute_sets.each do |user_attributes|
     u.bgg_username = user_attributes[:bgg_username]
     u.password = user_attributes[:password]
   end
-  games = BoardGameGeek::Game.for_user(user, seed: true)
+  games = BoardGameGeek::Playable.for_user(user, seed: true)
 
-  print "\nFound #{games.count} board games for user ##{user.id} (#{user.bgg_username})\n"
+  print "\nFound #{games.count} board games/expansions for user ##{user.id} (#{user.bgg_username})\n"
 end
+
+Playable.resynchronize

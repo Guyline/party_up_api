@@ -2,7 +2,7 @@ class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
   before_create do
-    self.id ||= SecureRandom.uuid unless type_for_attribute(:id).type == :integer
+    self.id ||= ApplicationRecord.generate_primary_key unless type_for_attribute(:id).type == :integer
   end
 
   self.implicit_order_column = :created_at
@@ -12,11 +12,13 @@ class ApplicationRecord < ActiveRecord::Base
     belongs_to_associations.map(&:name).sort!
   end
 
+  def self.generate_primary_key
+    SecureRandom.uuid
+  end
+
   def self.readable_type
     name.demodulize.underscore
   end
 
-  def readable_type
-    self.class.readable_type
-  end
+  delegate :readable_type, to: :class
 end

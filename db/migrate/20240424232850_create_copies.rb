@@ -1,7 +1,7 @@
 class CreateCopies < ActiveRecord::Migration[7.1]
   def change
     create_table :copies, id: :uuid do |t|
-      t.references :holder, type: :uuid, foreign_key: { to_table: :users }, null: true, default: nil
+      t.references :holder, type: :uuid, foreign_key: {to_table: :users}, null: true, default: nil
       t.references :game, type: :uuid, foreign_key: true
       t.references :version, type: :uuid, foreign_key: true, null: true, default: nil
       t.string :condition, null: true, default: nil

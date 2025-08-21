@@ -1,7 +1,7 @@
 json.data do
-  json.partial! 'resource',
-                resource:,
-                attributes_partial:
+  json.partial! "resource",
+    resource:,
+    attributes_partial:
 end
 json.links do
   json.self request.original_url

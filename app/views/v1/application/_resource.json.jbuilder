@@ -4,7 +4,7 @@ json.id resource.id
 if defined?(attributes_partial) && attributes_partial.is_a?(String)
   json.attributes do
     json.partial! attributes_partial,
-                  resource:
+      resource:
   end
 end
 

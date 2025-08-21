@@ -6,5 +6,5 @@ class V1::Owner::BaseController < V1::ApplicationController
   def owner
     @owner = User.find(params[:owner_id])
   end
-  alias set_owner owner
+  alias_method :set_owner, :owner
 end

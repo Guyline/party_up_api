@@ -1,3 +1,3 @@
-json.partial! 'index',
-              attributes_partial: 'v1/versions/version',
-              resources: @versions
+json.partial! "index",
+  attributes_partial: "v1/versions/version",
+  resources: @versions

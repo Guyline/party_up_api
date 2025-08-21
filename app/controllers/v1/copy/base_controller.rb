@@ -6,5 +6,5 @@ class V1::Copy::BaseController < V1::ApplicationController
   def copy
     @copy = Copy.find(params[:copy_id])
   end
-  alias set_copy copy
+  alias_method :set_copy, :copy
 end

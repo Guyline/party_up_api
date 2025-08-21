@@ -1,10 +1,10 @@
 json.data do
   json.array! resources,
-              partial: 'resource',
-              as: :resource,
-              locals: {
-                attributes_partial: defined?(attributes_partial) ? attributes_partial : nil
-              }.compact_blank
+    partial: "resource",
+    as: :resource,
+    locals: {
+      attributes_partial: defined?(attributes_partial) ? attributes_partial : nil
+    }.compact_blank
 end
 json.links do
   json.first URI::HTTP.build(
@@ -22,7 +22,7 @@ json.links do
       host: request.host,
       path: url_for(only_path: true, overwrite_params: nil),
       port: request.optional_port,
-      query: request.query_parameters.merge({ page: resources.total_pages }).to_query
+      query: request.query_parameters.merge({page: resources.total_pages}).to_query
     }.compact_blank
   ).to_s
 end

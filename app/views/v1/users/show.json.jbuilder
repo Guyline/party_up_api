@@ -1,3 +1,3 @@
-json.partial! 'show',
-              attributes_partial: 'v1/users/user',
-              resource: @user
+json.partial! "show",
+  attributes_partial: "v1/users/user",
+  resource: @user

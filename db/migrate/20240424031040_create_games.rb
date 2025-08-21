@@ -1,7 +1,7 @@
 class CreateGames < ActiveRecord::Migration[7.1]
   def change
     create_table :games, id: :uuid do |t|
-      t.integer :bgg_id, null: true, default: nil, index: { unique: true }
+      t.integer :bgg_id, null: true, default: nil, index: {unique: true}
       t.string :name, null: true, default: nil
       t.string :bgg_image_url, null: true, default: nil
       t.string :bgg_thumbnail_url, null: true, default: nil

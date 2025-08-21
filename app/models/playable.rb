@@ -9,7 +9,7 @@ class Playable < ApplicationRecord
   has_many :versions, inverse_of: :playable
 
   def resynchronize
-    raise 'Unable to resychronize record without :bgg_id specified' unless bgg_id
+    raise "Unable to resychronize record without :bgg_id specified" unless bgg_id
 
     ResynchronizePlayablesJob.perform_async(id)
   end
@@ -19,7 +19,7 @@ class Playable < ApplicationRecord
     query_base.where.not(bgg_id: nil)
 
     processed_playable_ids = []
-    batch_size = 100
+    batch_size = 20
     loop do
       playable_ids = query_base.where.not(id: processed_playable_ids).limit(batch_size).pluck(:id)
       break if playable_ids.empty?

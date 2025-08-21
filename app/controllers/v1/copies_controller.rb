@@ -1,9 +1,16 @@
 class V1::CopiesController < V1::ApplicationController
+  include V1::Concerns::HandlesCopies
+
   def index
-    @copies = Copy.includes(:playable, :version, :holder)
-                  .page(@page)
-                  .per(@per_page)
-                  .order({ @sort => @order })
+    @copies = Copy.includes(
+      :holder,
+      :location,
+      :playable,
+      :version
+    )
+      .page(@page)
+      .per(@per_page)
+      .order({@sort => @order})
   end
 
   def show
@@ -14,22 +21,5 @@ class V1::CopiesController < V1::ApplicationController
     copy = Copy.find(params[:id])
     copy.update!(copy_params)
     redirect_to copy
-  end
-
-  protected
-
-  def copy_params
-    params.require(:copy)
-          .permit(
-            :holder_id,
-            :version_id,
-            :condition,
-            :is_purchaseable,
-            :is_tradeable,
-            :is_playable,
-            :is_borrowable,
-            :asking_price,
-            :asking_currency
-          )
   end
 end

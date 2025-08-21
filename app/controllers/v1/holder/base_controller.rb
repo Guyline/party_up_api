@@ -6,5 +6,5 @@ class V1::Holder::BaseController < V1::ApplicationController
   def holder
     @holder = User.find(params[:holder_id])
   end
-  alias set_holder holder
+  alias_method :set_holder, :holder
 end

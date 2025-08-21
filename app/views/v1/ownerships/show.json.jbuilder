@@ -1,2 +1,2 @@
-json.partial! 'show',
-              resource: @ownership
+json.partial! "show",
+  resource: @ownership

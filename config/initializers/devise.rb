@@ -22,7 +22,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -34,7 +34,7 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -270,10 +270,14 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  # config.omniauth :google,
-  #                 Rails.application.credentials.oauth.google.client_id,
-  #                 Rails.application.credentials.oauth.google.client_secret,
-  #                 strategy_class: OmniAuth::Strategies::GoogleOauth2
+  # config.omniauth :google_oauth2,
+  #                 Rails.application.credentials.dig(:oauth, :google, :client_id),
+  #                 Rails.application.credentials.dig(:oauth, :google, :client_secret),
+  #                 {
+  #                   scope: 'email, profile',
+  #                   name: 'google',
+  #                   provider_ignores_state: true
+  #                 }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -297,6 +301,7 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+  # config.omniauth_path_prefix = '/v1/oauth'
 
   # ==> Hotwire/Turbo configuration
   # When using Devise with Hotwire/Turbo, the http status for error responses

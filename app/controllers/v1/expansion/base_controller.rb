@@ -6,5 +6,5 @@ class V1::Expansion::BaseController < V1::ApplicationController
   def expansion
     @expansion = Playable::Expansion.find(params[:expansion_id])
   end
-  alias set_expansion expansion
+  alias_method :set_expansion, :expansion
 end

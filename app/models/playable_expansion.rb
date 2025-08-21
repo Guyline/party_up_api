@@ -1,8 +1,8 @@
 class PlayableExpansion < ApplicationRecord
   belongs_to :playable,
-             required: true
+    optional: false
   belongs_to :expansion,
-             class_name: 'Playable::Expansion',
-             required: true,
-             inverse_of: :expandable_expansions
+    class_name: "Expansion",
+    optional: false,
+    inverse_of: :expandable_expansions
 end

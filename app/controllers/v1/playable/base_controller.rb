@@ -6,5 +6,5 @@ class V1::Playable::BaseController < V1::ApplicationController
   def playable
     @playable = Playable.find(params[:playable_id])
   end
-  alias set_playable playable
+  alias_method :set_playable, :playable
 end

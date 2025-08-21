@@ -10,23 +10,44 @@
 
 user_attribute_sets = [
   {
-    username: 'Guyline',
-    bgg_username: 'Guyline',
-    email_address: 'guyline82@gmail.com',
-    password: 'password'
+    username: "Guyline",
+    bgg_username: "Guyline",
+    email_address: "guyline82@gmail.com",
+    password: "password"
   }
 ]
 
 user_attribute_sets.each do |user_attributes|
   user = User.find_or_create_by!(email: user_attributes[:email_address]) do |u|
-    print "Creating User with email #{user_attributes[:email_address]}...\n"
+    p "Creating User with email #{user_attributes[:email_address]}..."
     u.username = user_attributes[:username]
     u.bgg_username = user_attributes[:bgg_username]
     u.password = user_attributes[:password]
   end
-  games = BoardGameGeek::Playable.for_user(user, seed: true)
 
-  print "\nFound #{games.count} board games/expansions for user ##{user.id} (#{user.bgg_username})\n"
+  counts = {
+    expansions: 0,
+    games: 0,
+    playables: 0
+  }
+  BoardGameGeek::Playable.for_user(user).find_each do |bgg_playable|
+    unless bgg_playable.is_a?(BoardGameGeek::Playable)
+      raise "Expected instance of BoardGameGeek::Playable, #{bgg_playable.class.name} detected!"
+    end
+
+    playable = bgg_playable.find_or_create_playable
+
+    counts[:playables] += 1
+    case playable.class
+    when Game then counts[:games] += 1
+    when Expansion then counts[:expansions] += 1
+    end
+  end
+
+  p "Found #{counts[:games]} games " \
+    "and #{counts[:expansions]} expansions " \
+    "(#{counts[:playables]} total) " \
+    "for user ##{user.id} (#{user.bgg_username})"
 end
 
 Playable.resynchronize

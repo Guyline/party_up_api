@@ -1,2 +1,4 @@
-class Location::Residence < Location
+module Location
+  class Residence < Location
+  end
 end

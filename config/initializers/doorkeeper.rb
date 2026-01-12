@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Doorkeeper.configure do
   # Change the ORM that doorkeeper will use (requires ORM extensions installed).
   # Check the list of supported ORMs here: https://github.com/doorkeeper-gem/doorkeeper#orms
@@ -539,17 +537,17 @@ Doorkeeper::JWT.configure do
   signing_method :hs512
 
   token_payload do |opts|
-    pp "RENDERING TOKEN PAYLOAD"
-    pp opts
+    Rails.logger.debug "RENDERING TOKEN PAYLOAD"
+    Rails.logger.debug opts
     user_id = opts[:resource_owner_id]
-    pp "USER ID: #{user_id}"
+    Rails.logger.debug { "USER ID: #{user_id}" }
     user = if user_id
       User.where(id: opts[:resource_owner_id])
         .where.not(id: nil)
         .select(:id, :email)
         .first
     end
-    pp user
+    Rails.logger.debug user
 
     token = {
       iss: "Party Up API",
@@ -561,14 +559,14 @@ Doorkeeper::JWT.configure do
     }
 
     if user
-      pp "USER FOUND!!!"
+      Rails.logger.debug "USER FOUND!!!"
       token[:user] = {
         id: user.id,
         email: user.email
       }
     end
-    pp "FINAL TOKEN"
-    pp token
+    Rails.logger.debug "FINAL TOKEN"
+    Rails.logger.debug token
     token
   end
 end

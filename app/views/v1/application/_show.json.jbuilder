@@ -3,6 +3,7 @@ json.data do
     resource:,
     attributes_partial:
 end
+
 json.links do
   json.self request.original_url
   if defined?(link_related)

@@ -1,4 +1,8 @@
 class Location < ApplicationRecord
+  include HasPublicId
+
+  self.public_id_prefix = "loc"
+
   before_save do
     set_google_place_id if changed?
   end

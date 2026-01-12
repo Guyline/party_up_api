@@ -75,3 +75,4 @@ yarn-debug.log*
 # End of https://www.toptal.com/developers/gitignore/api/rails
 
 /config/credentials/development.key
+.history

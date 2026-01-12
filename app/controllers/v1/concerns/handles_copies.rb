@@ -7,15 +7,15 @@ module V1::Concerns::HandlesCopies
     def copy_params
       params.expect(
         copy: %i[
-          holder_id
-          version_id
+          asking_currency
+          asking_price
           condition
+          holder_id
+          is_borrowable
+          is_playable
           is_purchaseable
           is_tradeable
-          is_playable
-          is_borrowable
-          asking_price
-          asking_currency
+          version_id
         ]
       )
     end

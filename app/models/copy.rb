@@ -1,4 +1,8 @@
 class Copy < ApplicationRecord
+  include HasPublicId
+
+  self.public_id_prefix = "cpy"
+
   enum :condition,
     {
       unknown: "unknown",
@@ -17,7 +21,7 @@ class Copy < ApplicationRecord
   validates :version_id,
     if: :version_id_changed?,
     inclusion: {
-      in: ->(copy) { copy.playable&.versions&.pluck(:id) }
+      in: ->(copy) { copy.item&.versions&.pluck(:id) }
     },
     allow_nil: true
   validates :condition,
@@ -34,7 +38,7 @@ class Copy < ApplicationRecord
   belongs_to :location,
     inverse_of: :copies,
     optional: true
-  belongs_to :playable,
+  belongs_to :item,
     inverse_of: :copies,
     optional: false
   belongs_to :holder,
@@ -56,9 +60,10 @@ class Copy < ApplicationRecord
     to: :version,
     prefix: true,
     allow_nil: true
-  delegate :name,
-    :bgg_id,
-    to: :playable,
+  delegate :bgg_id,
+    :classification,
+    :name,
+    to: :item,
     prefix: true,
     allow_nil: true
 
@@ -69,8 +74,4 @@ class Copy < ApplicationRecord
       less_than_or_equal_to: 9_999_999
     },
     allow_nil: true
-
-  def playable_type
-    playable&.readable_type
-  end
 end

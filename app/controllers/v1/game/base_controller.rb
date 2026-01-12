@@ -4,7 +4,7 @@ class V1::Game::BaseController < V1::ApplicationController
   protected
 
   def game
-    @game = Playable::Game.find(params[:game_id])
+    @game = Game.find(params[:game_id])
   end
   alias_method :set_game, :game
 end

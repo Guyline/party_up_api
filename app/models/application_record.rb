@@ -1,23 +1,28 @@
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
-  before_create do
-    self.id ||= ApplicationRecord.generate_primary_key unless type_for_attribute(:id).type == :integer
-  end
+  # before_create do
+  #   self.id ||= ApplicationRecord.generate_primary_key unless type_for_attribute(:id).type == :integer
+  # end
 
   self.implicit_order_column = :created_at
 
-  def self.api_relationships
-    belongs_to_associations = reflect_on_all_associations(:belongs_to)
-    belongs_to_associations.map(&:name).sort!
+  def all_association_names
+    self.class.reflect_on_all_associations.map(&:name).sort!
   end
 
-  def self.generate_primary_key
-    SecureRandom.uuid
+  def loaded_association_names
+    all_association_names.select { |name| association(name).loaded? }.sort!
   end
 
-  def self.readable_type
-    name.demodulize.underscore
+  class << self
+    # def generate_primary_key
+    #   SecureRandom.uuid
+    # end
+
+    def readable_type
+      name.demodulize.underscore
+    end
   end
 
   delegate :readable_type, to: :class

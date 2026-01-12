@@ -1,2 +1,4 @@
-class Location::Business < Location
+module Location
+  class Business < Location
+  end
 end

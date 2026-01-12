@@ -1,22 +1,18 @@
 json.type resource.readable_type.pluralize
-json.id resource.id
+json.id resource.public_id
 
-if defined?(attributes_partial) && attributes_partial.is_a?(String)
-  json.attributes do
-    json.partial! attributes_partial,
-      resource:
-  end
+json.attributes do
+  json.partial! resource,
+    partial: "v1/#{resource.readable_type.pluralize}/#{resource.readable_type}",
+    as: :resource
 end
 
-json.relationships do
-  resource.class.api_relationships.each do |name|
-    associated = resource.send(name)
-    next unless associated
-
-    json.set! name do
-      json.data do
-        json.id associated.id
-        json.type associated.readable_type&.pluralize
+unless resource.loaded_association_names.empty?
+  json.relationships do
+    resource.loaded_association_names.each do |association|
+      json.set! association do
+        json.partial! "relationship",
+          related: resource.send(association)
       end
     end
   end

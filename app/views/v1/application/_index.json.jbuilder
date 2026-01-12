@@ -1,11 +1,17 @@
 json.data do
   json.array! resources,
     partial: "resource",
-    as: :resource,
-    locals: {
-      attributes_partial: defined?(attributes_partial) ? attributes_partial : nil
-    }.compact_blank
+    as: :resource
 end
+
+if defined?(included) && included.is_a(Array)
+  json.included do
+    json.array! included,
+      partial: "resource",
+      as: :resource
+  end
+end
+
 json.links do
   json.first URI::HTTP.build(
     {

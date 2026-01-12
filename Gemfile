@@ -3,17 +3,23 @@ source "https://rubygems.org"
 ruby "3.4.5"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0"
+# gem "rails", "~> 8.0"
+gem "actionpack", "~> 8.1"
+gem "activejob", "~> 8.1"
+gem "activemodel", "~> 8.1"
+gem "activerecord", "~> 8.1"
 
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3', '~> 1.4'
 gem "mysql2", "~> 0.5"
+# gem "pg", "~> 1.6"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 6.6"
+gem "puma", "~> 7.0"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder", "~> 2.13"
+gem "jbuilder", "~> 2.14"
+# gem "jsonapi-resources", "~> 0.10"
 
 # Use Redis adapter to run Action Cable in productionn
 # gem "redis", ">= 4.0.1"
@@ -45,11 +51,15 @@ gem "doorkeeper-jwt", "~> 0.4"
 gem "googleauth", "~> 1.14"
 
 gem "countries", "~> 8.0"
+gem "csv", "~> 3.3"
 gem "discard", "~> 1.4"
 gem "kaminari", "~> 1.2"
 gem "money-rails", "~> 1.15"
+gem "nanoid", "~> 2.0"
 gem "nokogiri", "~> 1.18"
 gem "rest-client", "~> 2.1"
+gem "rexml", "~> 3.4"
+gem "ruby-progressbar", "~> 1.13"
 
 gem "sidekiq", "~> 8.0"
 
@@ -62,7 +72,8 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  # gem "rails-erd", "~> 1.7"
   gem "rdoc", "~> 6.14"
-  gem "standard", "~> 1.50", require: false
-  gem "standard-rails", "~> 1.4", require: false
+  gem "standard", "~> 1.51"
+  gem "standard-rails", "~> 1.4"
 end

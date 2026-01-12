@@ -1,6 +1,18 @@
 require_relative "boot"
 
-require "rails/all"
+# require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+# require "active_storage/engine"
+require "action_controller/railtie"
+# require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
+require "action_view/railtie"
+# require "action_cable/engine"
+# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -16,8 +28,6 @@ module PartyUpApi
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
-    config.autoload_paths += %W[#{config.root}/app/models/playable]
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -31,15 +41,6 @@ module PartyUpApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    # Session is required for OmniAuth, but sessions are disabled in V1::ApplicationController
-    config.session_store :cookie_store,
-      key: "_party_up_sessions",
-      expire_after: 1.day,
-      secure: true,
-      domain: :all
-    config.middleware.insert_before Warden::Manager, ActionDispatch::Cookies
-    config.middleware.insert_before Warden::Manager, ActionDispatch::Session::CookieStore, config.session_options
-
-    config.active_record.schema_format = :sql
+    # config.active_record.schema_format = :sql
   end
 end

@@ -1,7 +1,7 @@
 class V1::User::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google
-    pp "REQUESTING CALLBACK ENDPOINT"
-    pp request.env
+    Rails.logger.debug "REQUESTING CALLBACK ENDPOINT"
+    Rails.logger.debug request.env
 
     user = User.from_omniauth(auth)
     application = server.client

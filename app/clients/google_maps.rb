@@ -6,11 +6,11 @@ module GoogleMaps
         begin
           response = execute_request(:post, url, payload: {textQuery: query})
           results = JSON.parse(response&.body) || {}
-          pp results
+          Rails.logger.debug results
           results["places"]
         rescue RestClient::Exception => e
-          puts e.http_headers
-          puts e.http_body
+          Rails.logger.debug e.http_headers
+          Rails.logger.debug e.http_body
         end
       end
 

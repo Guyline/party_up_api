@@ -1,18 +1,51 @@
 {
+  "accessibility.verboseChatProgressUpdates": false,
+  "accessibility.verbosity.inlineChat": false,
+  "accessibility.verbosity.panelChat": false,
+  "accessibility.verbosity.terminalChatOutput": false,
+  "chat.agent.codeBlockProgress": false,
+  "chat.agent.enabled": false,
+  "chat.agent.thinking.generateTitles": false,
+  "chat.checkpoints.enabled": false,
+  "chat.commandCenter.enabled": false,
+  "chat.detectParticipant.enabled": false,
+  "chat.exitAfterDelegation": false,
+  "chat.extensionTools.enabled": false,
+  "chat.extensionUnification.enabled": false,
+  "chat.implicitContext.suggestedContext": false,
+  "chat.math.enabled": false,
+  "chat.notifyWindowOnConfirmation": false,
+  "chat.notifyWindowOnResponseReceived": false,
+  "chat.sendElementsToChat.attachCSS": false,
+  "chat.sendElementsToChat.attachImages": false,
+  "chat.sendElementsToChat.enabled": false,
+  "chat.suspendThrottling": false,
+  "chat.todoListTool.writeOnly": false,
+  "chat.tools.terminal.autoApproveWorkspaceNpmScripts": false,
+  "chat.tools.terminal.enableAutoApprove": false,
+  "chat.tools.terminal.preventShellHistory": false,
+  "chat.tools.todos.showWidget": false,
+  "chat.undoRequests.restoreInput": false,
+  "chat.useAgentsMdFile": false,
+  "chat.viewSessions.enabled": false,
+  "chat.viewTitle.enabled": false,
+  "chat.viewWelcome.enabled": false,
+  "inlineChat.holdToSpeech": false,
+  "notebook.experimental.generate": false,
   "sqltools.connections": [
     {
+      "database": "party_up_development",
+      "driver": "MariaDB",
       "mysqlOptions": {
         "authProtocol": "default",
         "enableSsl": "Disabled"
       },
+      "name": "Party Up API (development)",
+      "port": 3306,
       "previewLimit": 50,
       "server": "localhost",
-      "port": 3306,
-      "driver": "MariaDB",
-      "name": "Party Up API (development)",
-      "database": "party_up_development",
       "username": "party_up"
     }
   ],
-  "rubocop.commandPath": "${userHome}/.rvm/gems/ruby-3.4.5@party_up_api/bin/rubocop"
+  "workbench.commandPalette.showAskInChat": false
 }

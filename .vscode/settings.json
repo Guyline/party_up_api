@@ -30,8 +30,24 @@
   "chat.viewSessions.enabled": false,
   "chat.viewTitle.enabled": false,
   "chat.viewWelcome.enabled": false,
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.history": true,
+    "**/.ruby-lsp": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "**/Thumbs.db": true
+  },
   "inlineChat.holdToSpeech": false,
   "notebook.experimental.generate": false,
+  "rubyLsp.indexing": {
+    "excludedPatterns": [
+      ".history/**/*.rb"
+    ]
+  },
+  "sorbet.enabled": true,
   "sqltools.connections": [
     {
       "database": "party_up_development",

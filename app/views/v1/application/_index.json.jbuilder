@@ -4,9 +4,17 @@ json.data do
     as: :resource
 end
 
-if defined?(included) && included.is_a(Array)
+unless @includes.empty?
   json.included do
-    json.array! included,
+    included = @includes.each_with_object({}) do |association_name, result|
+      resources.map(&association_name).flatten.compact.each do |associated|
+        result[associated.public_id] ||= associated
+      end
+    end
+
+    pp included
+
+    json.array! included.values,
       partial: "resource",
       as: :resource
   end

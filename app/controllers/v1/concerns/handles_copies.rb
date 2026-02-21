@@ -19,5 +19,16 @@ module V1::Concerns::HandlesCopies
         ]
       )
     end
+
+    def valid_includes
+      {
+        "holder" => :holder,
+        "item" => :item,
+        "location" => :location,
+        "ownerships" => :ownerships,
+        "ownerships.owner" => :owners,
+        "version" => :version
+      }
+    end
   end
 end

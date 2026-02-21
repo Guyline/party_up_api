@@ -53,7 +53,7 @@ class User < ApplicationRecord
   has_many :held_items,
     -> { distinct },
     through: :held_copies,
-    source: :items
+    source: :item
   has_many :held_versions,
     -> { distinct },
     through: :held_copies,

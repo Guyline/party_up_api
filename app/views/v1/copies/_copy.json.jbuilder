@@ -5,7 +5,7 @@ json.is_playable resource.is_playable
 json.is_purchaseable resource.is_purchaseable
 json.is_tradeable resource.is_tradeable
 json.item_bgg_id resource.item_bgg_id
-json.item_classification resource.item_classification
+json.item_category resource.item_category
 json.item_name resource.item_name
 json.timestamps do
   json.created_at resource.created_at

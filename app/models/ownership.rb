@@ -4,7 +4,7 @@ class Ownership < ApplicationRecord
 
   self.public_id_prefix = "own"
 
-  default_scope -> { kept }
+  default_scope -> { kept.includes(:owner, :copy) }
 
   validates :owner_id,
     uniqueness: {
@@ -23,8 +23,8 @@ class Ownership < ApplicationRecord
     to: :owner,
     prefix: true,
     allow_nil: true
-  delegate :playable_bgg_id,
-    :playable_name,
+  delegate :item_bgg_id,
+    :item_name,
     :version_bgg_id,
     :version_name,
     to: :copy,

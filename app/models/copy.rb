@@ -61,7 +61,7 @@ class Copy < ApplicationRecord
     prefix: true,
     allow_nil: true
   delegate :bgg_id,
-    :classification,
+    :category,
     :name,
     to: :item,
     prefix: true,

@@ -12,6 +12,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def loaded_association_names
+    pp all_association_names
     all_association_names.select { |name| association(name).loaded? }.sort!
   end
 

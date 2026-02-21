@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     resources :items, only: %i[index show] do
       scope module: :item do
         resources :copies, only: %i[index create]
+        resources :expandables, only: [:index]
         resources :expansions, only: [:index]
         resources :holders, only: %i[index]
         resources :owners, only: [:index]

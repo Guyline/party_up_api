@@ -2,10 +2,13 @@ json.type resource.readable_type.pluralize
 json.id resource.public_id
 
 json.attributes do
-  json.partial! resource,
-    partial: "v1/#{resource.readable_type.pluralize}/#{resource.readable_type}",
-    as: :resource
+  json.partial! "v1/#{resource.readable_type.pluralize}/#{resource.readable_type}",
+    resource:
 end
+
+pp "Here!"
+pp resource
+pp resource.loaded_association_names
 
 unless resource.loaded_association_names.empty?
   json.relationships do

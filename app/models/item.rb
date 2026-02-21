@@ -52,7 +52,7 @@ class Item < ApplicationRecord
     ResynchronizeItemsJob.perform_async(id)
   end
 
-  def classification
+  def category
     playable_type&.demodulize&.underscore
   end
 

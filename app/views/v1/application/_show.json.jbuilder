@@ -1,7 +1,6 @@
 json.data do
   json.partial! "resource",
-    resource:,
-    attributes_partial:
+    resource:
 end
 
 json.links do

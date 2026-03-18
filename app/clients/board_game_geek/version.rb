@@ -1,4 +1,4 @@
-# Represents a version of a playable, i.e. a released edition from a specific
+# Represents a version of a thing, i.e. a released edition from a specific
 # publisher at a specific time
 module BoardGameGeek
   class Version

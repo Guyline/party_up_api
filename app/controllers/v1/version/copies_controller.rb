@@ -6,7 +6,6 @@ class V1::Version::CopiesController < V1::Version::BaseController
       .includes(
         :holder,
         :location,
-        :playable,
         :version
       )
       .page(@page)
@@ -17,7 +16,7 @@ class V1::Version::CopiesController < V1::Version::BaseController
 
   def create
     copy = @version.copies.create!(copy_params)
-    copy.playable = @version.playable
+    copy.item = @version.item
     copy.save!
 
     redirect_to copy

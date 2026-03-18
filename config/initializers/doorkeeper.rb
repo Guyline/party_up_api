@@ -537,36 +537,29 @@ Doorkeeper::JWT.configure do
   signing_method :hs512
 
   token_payload do |opts|
-    Rails.logger.debug "RENDERING TOKEN PAYLOAD"
-    Rails.logger.debug opts
     user_id = opts[:resource_owner_id]
-    Rails.logger.debug { "USER ID: #{user_id}" }
     user = if user_id
       User.where(id: opts[:resource_owner_id])
         .where.not(id: nil)
-        .select(:id, :email)
+        .select(:id, :public_id, :email)
         .first
     end
-    Rails.logger.debug user
 
     token = {
-      iss: "Party Up API",
+      aud: opts.dig(:application, :uid),
       iat: Time.current.utc.to_i,
-      aud: opts[:application][:uid],
-
+      iss: "Party Up API",
       jti: SecureRandom.uuid,
-      sub: user&.id
+      sub: user&.public_id
     }
 
     if user
       Rails.logger.debug "USER FOUND!!!"
       token[:user] = {
-        id: user.id,
+        id: user.public_id,
         email: user.email
       }
     end
-    Rails.logger.debug "FINAL TOKEN"
-    Rails.logger.debug token
     token
   end
 end

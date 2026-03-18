@@ -9,7 +9,7 @@ json.data do
   elsif related.respond_to?(:each)
     json.array! related do |relationship|
       json.id relationship.public_id
-      json.type relationship.readable_type&.pluralize
+      json.type relationship.base_readable_type.pluralize
     end
   end
 end

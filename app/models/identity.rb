@@ -1,9 +1,29 @@
 class Identity < ApplicationRecord
-  encrypts :token, deterministic: true
-  encrypts :secret, deterministic: true
-  encrypts :refresh_token, deterministic: true
+  PROVIDERS = [
+    PROVIDER_GOOGLE = "google"
+  ].freeze
 
-  belongs_to :user, optional: true
+  encrypts :token,
+    deterministic: true
+  encrypts :secret,
+    deterministic: true
+  encrypts :refresh_token,
+    deterministic: true
 
-  validates :uid, uniqueness: {scope: [:provider]}
+  belongs_to :user,
+    optional: true
+
+  validates :email,
+    presence: true,
+    format: URI::MailTo::EMAIL_REGEXP
+  validates :provider,
+    inclusion: {
+      in: PROVIDERS
+    }
+  validates :uid,
+    uniqueness: {
+      scope: [
+        :provider
+      ]
+    }
 end

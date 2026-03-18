@@ -1,6 +1,6 @@
 class V1::ApplicationController < ApplicationController
   before_action :skip_session
-  # before_action :doorkeeper_authorize!
+  before_action :doorkeeper_authorize!
   before_action :set_includes
   before_action :set_pagination_params,
     only: [:index]
@@ -15,8 +15,8 @@ class V1::ApplicationController < ApplicationController
   protected
 
   def set_pagination_params
-    @page = params[:page] || 1
-    @per_page = params[:per_page] || 20
+    @page = params.fetch(:page, 1)
+    @per_page = params.fetch(:per_page, 20)
     @sort = params.fetch(:sort, :created_at)
     @order = params.fetch(:order, :asc)
   end
@@ -117,7 +117,7 @@ class V1::ApplicationController < ApplicationController
   end
 
   def current_user
-    @current_user ||= User.where(email: "guyline82@gmail.com").first
-    # @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
+    # @current_user ||= User.where(email: "guyline82@gmail.com").first
+    @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
   end
 end

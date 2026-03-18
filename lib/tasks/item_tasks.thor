@@ -43,15 +43,14 @@ class ItemTasks < Thor
       item = Item.find_or_create_by(bgg_id: bgg_id) do |i|
         case row["itemtype"]
         when "standalone"
-          playable = Game.create
+          i.becomes! Game
           counts[:games_created] += 1
         when "expansion"
-          playable = Expansion.create
+          i.becomes! Expansion
           counts[:expansions_created] += 1
         else
           throw :abort
         end
-        i.playable = playable
         i.name = row["objectname"]
       end
 

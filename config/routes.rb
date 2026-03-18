@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Rswag::Api::Engine => "/api-docs"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
   #            path: 'v1/oauth'
 
   namespace :v1, defaults: {format: :json} do
-    post "/oauth/google/callback", to: "oauth/callbacks#google"
+    get "/oauth/google/callback", to: "oauth/callbacks#google"
 
     # jsonapi_resources :copies, only: [:index, :show] do
     # end

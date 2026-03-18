@@ -63,6 +63,8 @@ gem "ruby-progressbar", "~> 1.13"
 
 gem "sidekiq", "~> 8.0"
 
+gem "rswag-api", "~> 2.17"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows]
@@ -76,4 +78,7 @@ group :development do
   gem "rdoc", "~> 6.14"
   gem "standard", "~> 1.51"
   gem "standard-rails", "~> 1.4"
+
+  gem "rspec-rails", "~> 8.0"
+  gem "rswag-specs", "~> 2.17"
 end

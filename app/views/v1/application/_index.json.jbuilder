@@ -12,8 +12,6 @@ unless @includes.empty?
       end
     end
 
-    pp included
-
     json.array! included.values,
       partial: "resource",
       as: :resource

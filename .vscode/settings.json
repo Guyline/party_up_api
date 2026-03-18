@@ -14,8 +14,8 @@
   "chat.extensionUnification.enabled": false,
   "chat.implicitContext.suggestedContext": false,
   "chat.math.enabled": false,
-  "chat.notifyWindowOnConfirmation": false,
-  "chat.notifyWindowOnResponseReceived": false,
+  "chat.notifyWindowOnConfirmation": "off",
+  "chat.notifyWindowOnResponseReceived": "off",
   "chat.sendElementsToChat.attachCSS": false,
   "chat.sendElementsToChat.attachImages": false,
   "chat.sendElementsToChat.enabled": false,
@@ -44,8 +44,11 @@
   "notebook.experimental.generate": false,
   "rubyLsp.indexing": {
     "excludedPatterns": [
-      ".history/**/*.rb"
+      "**/.history/**/*"
     ]
+  },
+  "search.exclude": {
+    "**/.history/**/*": true
   },
   "sorbet.enabled": true,
   "sqltools.connections": [

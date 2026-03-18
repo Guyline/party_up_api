@@ -1,3 +1,2 @@
-class Game < ApplicationRecord
-  include Playable
+class Game < Item
 end

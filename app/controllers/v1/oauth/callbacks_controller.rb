@@ -1,22 +1,28 @@
 class V1::Oauth::CallbacksController < V1::ApplicationController
-  def google
-    token = params[:credential]
-    client_id = Rails.application.credentials.dig(:oauth, :google, :client_id)
-    token = Google::Auth::IDTokens.verify_oidc(token, aud: client_id)
+  skip_before_action :doorkeeper_authorize!,
+    only: [
+      :google
+    ]
 
-    user = User.from_google_id_token(token)
+  def google
+    authorization_code = params[:code]
+    callback_uri = doorkeeper_token&.application&.redirect_uri || request.base_url + request.path
+    Utilities::Oauth.google_authorize(authorization_code, callback_uri) => {
+      expires_at:,
+      id_token:,
+      refresh_token:
+    }
+
+    user = User.from_google_id_token(id_token, refresh_token:, expires_at:)
     expires_in = Doorkeeper.config.access_token_expires_in
 
-    access_token = Doorkeeper::AccessToken.find_or_create_for(
-      application: doorkeeper_token.application,
+    access_token = Oauth::AccessToken.find_or_create_for(
+      application: doorkeeper_token&.application,
       expires_in: (expires_in == Float::INFINITY) ? nil : expires_in,
-      id: ApplicationRecord.generate_primary_key,
       resource_owner: user,
       scopes: "",
       use_refresh_token: Doorkeeper.config.refresh_token_enabled?
     )
-
-    Rails.logger.debug access_token
 
     render json: {
       access_token: access_token.token,

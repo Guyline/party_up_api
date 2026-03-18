@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_05_000611) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_10_020612) do
   create_table "copies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "asking_currency", limit: 3
     t.integer "asking_price_cents"
@@ -70,13 +70,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_000611) do
 
   create_table "item_expansions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "expansion_id"
-    t.bigint "item_id"
+    t.bigint "expandable_item_id", null: false
+    t.bigint "expansion_item_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["created_at", "updated_at"], name: "index_item_expansions_on_created_at_and_updated_at"
-    t.index ["expansion_id"], name: "index_item_expansions_on_expansion_id"
-    t.index ["item_id"], name: "index_item_expansions_on_item_id"
-    t.index ["updated_at"], name: "index_item_expansions_on_updated_at"
+    t.index ["expandable_item_id", "expansion_item_id"], name: "idx_on_expandable_item_id_expansion_item_id_390cb3e813", unique: true
+    t.index ["expansion_item_id"], name: "index_item_expansions_on_expansion_item_id"
   end
 
   create_table "items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -85,14 +83,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_000611) do
     t.string "bgg_thumbnail_url"
     t.datetime "created_at", null: false
     t.string "name"
-    t.bigint "playable_id"
-    t.string "playable_type"
     t.string "public_id"
+    t.string "type"
     t.datetime "updated_at", null: false
     t.index ["bgg_id"], name: "index_items_on_bgg_id", unique: true
     t.index ["created_at", "updated_at"], name: "index_items_on_created_at_and_updated_at"
     t.index ["name"], name: "index_items_on_name"
-    t.index ["playable_type", "playable_id"], name: "index_items_on_playable_type_and_playable_id", unique: true
     t.index ["public_id"], name: "index_items_on_public_id", unique: true
     t.index ["updated_at"], name: "index_items_on_updated_at"
   end
@@ -227,8 +223,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_000611) do
   add_foreign_key "copies", "users", column: "holder_id"
   add_foreign_key "copies", "versions"
   add_foreign_key "identities", "users"
-  add_foreign_key "item_expansions", "expansions"
-  add_foreign_key "item_expansions", "items"
+  add_foreign_key "item_expansions", "items", column: "expandable_item_id"
+  add_foreign_key "item_expansions", "items", column: "expansion_item_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

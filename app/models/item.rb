@@ -3,26 +3,25 @@ class Item < ApplicationRecord
 
   self.public_id_prefix = "itm"
 
-  delegated_type :playable,
-    types: %w[
-      Game
-      Expansion
-    ],
-    dependent: :destroy,
-    optional: true
-
   validates :name,
     presence: true
   validates :bgg_id,
     uniqueness: true,
     allow_nil: true
 
-  has_many :item_expansions,
+  has_many :item_expansions_as_expandable,
     class_name: "ItemExpansion",
-    inverse_of: :item
+    inverse_of: :expandable_item
   has_many :expansions,
-    through: :item_expansions,
-    source: :expansion
+    through: :item_expansions_as_expandable,
+    source: :expansion_item
+
+  has_many :item_expansions_as_expansion,
+    class_name: "ItemExpansion",
+    inverse_of: :expansion_item
+  has_many :expandables,
+    through: :item_expansions_as_expansion,
+    source: :expandable_item
 
   has_many :copies,
     inverse_of: :item
@@ -42,10 +41,6 @@ class Item < ApplicationRecord
   has_many :versions,
     inverse_of: :item
 
-  default_scope do
-    includes(:playable)
-  end
-
   def resynchronize
     raise "Unable to resychronize record without :bgg_id specified" unless bgg_id
 
@@ -53,11 +48,12 @@ class Item < ApplicationRecord
   end
 
   def category
-    playable_type&.demodulize&.underscore
+    type&.demodulize&.underscore
   end
 
   class << self
     def from_bgg_thing(thing, with_expansions: false, with_expandables: false)
+      pp thing.class
       raise ArgumentError, "Expected instance of BoardGameGeek::Thing" unless thing.is_a?(BoardGameGeek::Thing)
 
       item = find_or_initialize_by(bgg_id: thing.id)
@@ -65,31 +61,37 @@ class Item < ApplicationRecord
       item.bgg_thumbnail_url = thing.thumbnail_url || item.bgg_thumbnail_url
       item.name = thing.name || item.name
 
-      if thing.is_a?(BoardGameGeek::Game)
-        item.playable = Game.create!
-      elsif thing.is_a?(BoardGameGeek::Expansion)
-        item.playable = Expansion.create!
+      item = case thing
+      when BoardGameGeek::Game
+        item.becomes! Game
+      when BoardGameGeek::Expansion
+        item.becomes! Expansion
+      else
+        item
       end
+      pp item
 
       item.save!
 
       if with_expansions
         thing.expansions.each_value do |bgg_expansion|
           expansion_item = from_bgg_thing(bgg_expansion)
-          unless expansion_item.playable.is_a?(Expansion)
+          unless expansion_item.is_a?(Expansion)
             raise "Non-expansion item found/created when processing BGG thing."
           end
 
-          item.item_expansions.find_or_create_by!(expansion: expansion_item.playable)
+          item.expansions << expansion_item
         end
       end
 
-      if with_expandables && thing.respond_to?(:expandables) && item.playable.is_a?(Expansion)
+      if with_expandables && thing.respond_to?(:expandables) && item.respond_to?(:expandable_items)
         thing.expandables.each_value do |bgg_expandable|
           expandable_item = from_bgg_thing(bgg_expandable)
-          raise "Non-expandable item found/created when processing BGG thing." unless expandable_item.is_a?(Item)
+          unless expandable_item.is_a?(Item)
+            raise "Non-expandable item found/created when processing BGG thing."
+          end
 
-          item.playable.item_expansions.find_or_create_by!(item: expandable_item)
+          item.expandable_items << expandable_item
         end
       end
 
@@ -98,7 +100,7 @@ class Item < ApplicationRecord
 
     def resynchronize(untyped_only: true)
       query_base = where.not(bgg_id: nil)
-      query_base.where.missing(:playable) if untyped_only
+      query_base.where(type: nil) if untyped_only
 
       processed_ids = []
       batch_size = 20

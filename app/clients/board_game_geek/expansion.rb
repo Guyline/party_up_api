@@ -9,7 +9,7 @@ module BoardGameGeek
     end
 
     def add_expandable(expandable, add_as_expansion: true)
-      raise "Specified record is not a thing." unless expansion.is_a?(BoardGameGeek::Thing)
+      raise "Specified record is not a thing." unless expandable.is_a?(BoardGameGeek::Thing)
 
       @expandables[expandable.id] = expandable
       expandable.add_expansion(self, add_as_expandable: false) if add_as_expansion

@@ -14,14 +14,15 @@ class User < ApplicationRecord
   #  omniauth_providers: [:google]
 
   has_many :access_grants,
-    class_name: "Doorkeeper::AccessGrant",
+    class_name: Doorkeeper.config.access_grant_class.to_s,
     foreign_key: :resource_owner_id,
     dependent: :delete_all
 
   has_many :access_tokens,
-    class_name: "Doorkeeper::AccessToken",
+    class_name: Doorkeeper.config.access_token_class.to_s,
+    dependent: :delete_all,
     foreign_key: :resource_owner_id,
-    dependent: :delete_all
+    inverse_of: :resource_owner
 
   has_many :identities
 
@@ -60,12 +61,10 @@ class User < ApplicationRecord
     source: :version
 
   class << self
-    def from_google_id_token(token)
+    def from_google_id_token(token, refresh_token: nil, expires_at: nil)
       provider = "google"
-      uid = token["sub"]
-      email = token["email"].downcase
-      first_name = token["given_name"]
-      last_name = token["family_name"]
+      email, first_name, last_name, uid = token.values_at("email", "given_name", "family_name", "sub")
+      email.downcase!
 
       identity = Identity.where(provider:, uid:).first
       unless identity
@@ -81,9 +80,15 @@ class User < ApplicationRecord
           uid:
         )
       end
+
+      identity.email ||= email
       identity.first_name ||= first_name
       identity.last_name ||= last_name
-      identity.email ||= email
+
+      identity.token = token
+      identity.refresh_token = refresh_token
+      identity.token_expires_at = expires_at
+
       identity.save!
 
       identity.user

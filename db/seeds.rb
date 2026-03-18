@@ -14,25 +14,6 @@ Rails.logger.debug { "  id: #{application.id}" }
 Rails.logger.debug { "  client_id: #{application.uid}" }
 Rails.logger.debug { "  clent_secret: #{application.plaintext_secret}" }
 
-# The following block was used when transitioning from STI to delgated types
-# This involved finding records with a `type` specified without an associated
-#   record in 'games' or 'expansions' and creating the relevant record based
-#   on the set `type`
-#
-# item_map = {
-#   "Playable::Game" => Game,
-#   "Playable::Expansion" => Expansion
-# }
-#
-# Item.where(playable_id: nil, playable_type: nil).find_each do |item|
-#   klass = item_map[item.type]
-#   next if klass.nil?
-#
-#   playable = klass.create!
-#   item.playable = playable
-#   item.save!
-# end
-
 user_attribute_sets = [
   {
     username: "Guyline",

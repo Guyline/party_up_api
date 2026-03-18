@@ -12,7 +12,6 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def loaded_association_names
-    pp all_association_names
     all_association_names.select { |name| association(name).loaded? }.sort!
   end
 
@@ -24,7 +23,11 @@ class ApplicationRecord < ActiveRecord::Base
     def readable_type
       name.demodulize.underscore
     end
+
+    def base_readable_type
+      base_class.name.demodulize.underscore
+    end
   end
 
-  delegate :readable_type, to: :class
+  delegate :readable_type, :base_readable_type, to: :class
 end

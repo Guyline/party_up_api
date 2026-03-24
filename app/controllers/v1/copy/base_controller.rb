@@ -1,10 +1,7 @@
 class V1::Copy::BaseController < V1::ApplicationController
-  before_action :set_copy
-
   protected
 
   def copy
-    @copy = Copy.find(params[:copy_id])
+    @copy ||= Copy.find_by!(public_id: params[:copy_id])
   end
-  alias_method :set_copy, :copy
 end

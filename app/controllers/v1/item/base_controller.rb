@@ -1,11 +1,7 @@
 class V1::Item::BaseController < V1::ApplicationController
-  before_action :set_item
-
   protected
 
   def item
     @item = Item.find_by!(public_id: params[:item_id])
   end
-
-  alias_method :set_item, :item
 end

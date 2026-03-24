@@ -1,2 +1,2 @@
 json.partial! "index",
-  resources: @ownerships
+  resources: @resources

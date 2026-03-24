@@ -1,2 +1,2 @@
 json.partial! "index",
-  resources: @users
+  resources: @resources

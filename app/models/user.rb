@@ -64,7 +64,7 @@ class User < ApplicationRecord
     def from_google_id_token(token, refresh_token: nil, expires_at: nil)
       provider = "google"
       email, first_name, last_name, uid = token.values_at("email", "given_name", "family_name", "sub")
-      email.downcase!
+      email&.downcase!
 
       identity = Identity.where(provider:, uid:).first
       unless identity

@@ -5,7 +5,18 @@ module V1::Concerns::HandlesOwnerships
     protected
 
     def ownership_params
-      params.expect(ownerships: [:owner_id])
+      params.expect(
+        ownerships: [
+          :owner_id
+        ]
+      )
+    end
+
+    def valid_includes
+      {
+        "copy" => :copy,
+        "owner" => :owner
+      }
     end
   end
 end

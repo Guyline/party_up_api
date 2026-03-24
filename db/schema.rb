@@ -10,22 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_10_020612) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_211414) do
   create_table "copies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "asking_currency", limit: 3
     t.integer "asking_price_cents"
     t.column "condition", "enum('unknown','new','excellent','good','fair','poor')", default: "unknown", null: false
     t.datetime "created_at", null: false
     t.bigint "holder_id"
+    t.string "holder_public_id"
     t.boolean "is_borrowable", default: false
     t.boolean "is_playable", default: false
     t.boolean "is_purchaseable", default: false
     t.boolean "is_tradeable", default: false
     t.bigint "item_id"
+    t.string "item_public_id"
     t.bigint "location_id"
+    t.string "location_public_id"
     t.string "public_id"
     t.datetime "updated_at", null: false
     t.bigint "version_id"
+    t.string "version_public_id"
     t.index ["created_at", "updated_at"], name: "index_copies_on_created_at_and_updated_at"
     t.index ["holder_id"], name: "index_copies_on_holder_id"
     t.index ["item_id"], name: "index_copies_on_item_id"

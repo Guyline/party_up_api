@@ -1,11 +1,7 @@
 class V1::UsersController < V1::ApplicationController
-  def index
-    @users = User.page(@page)
-      .per(@per_page)
-      .order({@sort => @order})
-  end
+  include V1::Concerns::HandlesUsers
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by!(public_id: params[:id])
   end
 end

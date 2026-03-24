@@ -1,15 +1,27 @@
 class V1::ApplicationController < ApplicationController
   before_action :skip_session
   before_action :doorkeeper_authorize!
-  before_action :set_includes
+  before_action :set_includes,
+    only: [
+      :index
+    ]
   before_action :set_pagination_params,
-    only: [:index]
+    only: [
+      :index
+    ]
 
   after_action :set_count_header,
-    only: [:index]
+    only: [
+      :index
+    ]
 
   def index
-    raise NotImplementedError
+    @resources = index_query
+      .page(@page)
+      .per(@per_page)
+      .order({@sort => @order})
+      .includes(valid_includes.values)
+    @total_count = index_query.count
   end
 
   protected
@@ -37,6 +49,10 @@ class V1::ApplicationController < ApplicationController
   end
 
   def valid_includes
+    raise NotImplementedError
+  end
+
+  def index_query
     raise NotImplementedError
   end
 

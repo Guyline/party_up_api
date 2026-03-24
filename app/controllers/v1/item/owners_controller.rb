@@ -1,10 +1,15 @@
 class V1::Item::OwnersController < V1::Item::BaseController
+  include V1::Concerns::HandlesUsers
+
   def index
-    @users = @item.owners
-      .page(@page)
-      .per(@per_page)
-      .order({@sort => @order})
+    super
 
     render "v1/users/index"
+  end
+
+  protected
+
+  def index_query
+    item.owners
   end
 end

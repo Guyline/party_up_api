@@ -41,6 +41,41 @@ class Item < ApplicationRecord
   has_many :versions,
     inverse_of: :item
 
+  scope :held_by_user, ->(user) {
+    joins(:copies)
+      .where(
+        copies: {
+          holder_id: user.id
+        }
+      )
+  }
+  scope :owned_by_user, ->(user) {
+    joins(
+      copies: [
+        :ownerships
+      ]
+    ).where(
+      ownerships: {
+        owner_id: user.id
+      }
+    )
+  }
+  scope :for_user, ->(user) {
+    joins(
+      sanitize_sql([
+        "
+          INNER JOIN copies ON copies.item_id = items.id
+          LEFT JOIN ownerships ON copies.id = ownerships.copy_id
+            AND ownerships.owner_id = :user_id
+        ".squish,
+        user_id: user.id
+      ])
+    ).where(
+      "copies.holder_id = :user_id OR ownerships.id IS NOT NULL",
+      user_id: user.id
+    ).distinct
+  }
+
   def resynchronize
     raise "Unable to resychronize record without :bgg_id specified" unless bgg_id
 
@@ -53,7 +88,6 @@ class Item < ApplicationRecord
 
   class << self
     def from_bgg_thing(thing, with_expansions: false, with_expandables: false)
-      pp thing.class
       raise ArgumentError, "Expected instance of BoardGameGeek::Thing" unless thing.is_a?(BoardGameGeek::Thing)
 
       item = find_or_initialize_by(bgg_id: thing.id)
@@ -69,7 +103,6 @@ class Item < ApplicationRecord
       else
         item
       end
-      pp item
 
       item.save!
 

@@ -74,4 +74,12 @@ class Copy < ApplicationRecord
       less_than_or_equal_to: 9_999_999
     },
     allow_nil: true
+
+  scope :for_user, ->(user) {
+    left_outer_joins(:ownerships)
+      .where(
+        "copies.holder_id = :user_id OR ownerships.owner_id = :user_id",
+        user_id: user.id
+      ).distinct
+  }
 end

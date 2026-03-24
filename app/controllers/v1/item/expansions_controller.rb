@@ -1,17 +1,15 @@
 class V1::Item::ExpansionsController < V1::Item::BaseController
-  def index
-    base_query = @item.expansions
+  include V1::Concerns::HandlesItems
 
-    @total_count = base_query.count
-    @items = base_query
-      .page(@page)
-      .per(@per_page)
-      .order({@sort => @order})
-      .includes(
-        :expandables,
-        :expansions
-      )
+  def index
+    super
 
     render "v1/items/index"
+  end
+
+  protected
+
+  def index_query
+    item.expansions
   end
 end

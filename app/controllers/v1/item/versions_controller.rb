@@ -1,10 +1,15 @@
-class V1::Item::OwnershipsController < V1::Item::BaseController
-  def index
-    @ownerships = @item.ownerships
-      .page(@page)
-      .per(@per_page)
-      .order({@sort => @order})
+class V1::Item::VersionsController < V1::Item::BaseController
+  include V1::Concerns::HandlesVersions
 
-    render "v1/ownerships/index"
+  def index
+    super
+
+    render "v1/versions/index"
+  end
+
+  protected
+
+  def index_query
+    item.versions
   end
 end

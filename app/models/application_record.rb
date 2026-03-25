@@ -5,7 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
   #   self.id ||= ApplicationRecord.generate_primary_key unless type_for_attribute(:id).type == :integer
   # end
 
-  before_save :set_associated_public_ids
+  # before_save :set_associated_public_ids
 
   self.implicit_order_column = :created_at
 

@@ -21,7 +21,6 @@ class V1::ApplicationController < ApplicationController
       .per(@per_page)
       .order({@sort => @order})
       .includes(valid_includes.values)
-    @total_count = index_query.count
   end
 
   protected
@@ -45,7 +44,7 @@ class V1::ApplicationController < ApplicationController
   end
 
   def set_count_header
-    response.headers["X-Total-Count"] = @total_count || nil
+    response.headers["X-Total-Count"] = @resources&.total_count || nil
   end
 
   def valid_includes

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_231209) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_203410) do
   create_table "copies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "asking_currency", limit: 3
     t.integer "asking_price_cents"
@@ -68,6 +68,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_231209) do
     t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
+  create_table "invites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.bigint "invitee_id", null: false
+    t.bigint "inviter_id"
+    t.boolean "is_host", default: false
+    t.bigint "meetup_id", null: false
+    t.string "public_id"
+    t.datetime "rejected_at"
+    t.datetime "updated_at", null: false
+    t.index ["invitee_id"], name: "index_invites_on_invitee_id"
+    t.index ["inviter_id"], name: "index_invites_on_inviter_id"
+    t.index ["meetup_id", "invitee_id"], name: "index_invites_on_meetup_id_and_invitee_id", unique: true
+    t.index ["public_id"], name: "index_invites_on_public_id", unique: true
+  end
+
   create_table "item_expansions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "expandable_item_id", null: false
@@ -107,6 +123,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_231209) do
     t.datetime "updated_at", null: false
     t.index ["google_place_id"], name: "index_locations_on_google_place_id"
     t.index ["public_id"], name: "index_locations_on_public_id", unique: true
+  end
+
+  create_table "meetups", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "attendees_count", default: 0, null: false, unsigned: true
+    t.datetime "canceled_at"
+    t.datetime "created_at", null: false
+    t.bigint "creator_id"
+    t.text "description"
+    t.datetime "ends_at"
+    t.column "exclusivity", "enum('creator_invite','host_invite','attendee_invite','open')", default: "creator_invite"
+    t.integer "invites_count", default: 0, null: false, unsigned: true
+    t.boolean "is_public", default: false
+    t.bigint "location_id"
+    t.string "public_id"
+    t.datetime "published_at"
+    t.datetime "starts_at"
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_meetups_on_creator_id"
+    t.index ["location_id"], name: "index_meetups_on_location_id"
+    t.index ["public_id"], name: "index_meetups_on_public_id", unique: true
   end
 
   create_table "oauth_access_grants", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -223,8 +259,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_231209) do
   add_foreign_key "copies", "users", column: "holder_id"
   add_foreign_key "copies", "versions"
   add_foreign_key "identities", "users"
+  add_foreign_key "invites", "meetups"
+  add_foreign_key "invites", "users", column: "invitee_id"
+  add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "item_expansions", "items", column: "expandable_item_id"
   add_foreign_key "item_expansions", "items", column: "expansion_item_id"
+  add_foreign_key "meetups", "locations"
+  add_foreign_key "meetups", "users", column: "creator_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

@@ -26,43 +26,83 @@ class User < ApplicationRecord
 
   has_many :identities
 
+  #############
+  # Locations #
+  #############
+
   has_many :user_locations,
     inverse_of: :user
   has_many :managed_locations,
     through: :user_locations,
     source: :location
 
+  ##############
+  # Ownerships #
+  ##############
+
   has_many :ownerships,
     inverse_of: :owner
 
-  has_many :owned_copies,
-    through: :ownerships,
-    source: :copy
-  has_many :owned_items,
-    -> { distinct },
-    through: :owned_copies,
-    source: :item
-  has_many :owned_versions,
-    -> { distinct },
-    through: :owned_copies,
-    source: :version
+  ##########
+  # Copies #
+  ##########
 
   has_many :held_copies,
     class_name: "Copy",
     foreign_key: :holder_id,
     inverse_of: :holder
+  has_many :owned_copies,
+    through: :ownerships,
+    source: :copy
+
+  #########
+  # Items #
+  #########
+
   has_many :held_items,
     -> { distinct },
     through: :held_copies,
     source: :item
+  has_many :owned_items,
+    -> { distinct },
+    through: :owned_copies,
+    source: :item
+
+  ############
+  # Versions #
+  ############
+
   has_many :held_versions,
     -> { distinct },
     through: :held_copies,
     source: :version
+  has_many :owned_versions,
+    -> { distinct },
+    through: :owned_copies,
+    source: :version
+
+  ###########
+  # Meetups #
+  ###########
+
+  has_many :created_meetups,
+    class_name: Meetup.name.to_s,
+    inverse_of: :creator
+
+  ###########
+  # Invites #
+  ###########
+
+  has_many :sent_invites,
+    class_name: Invite.name.to_s,
+    inverse_of: :inviter
+  has_many :received_invites,
+    class_name: Invite.name.to_s,
+    inverse_of: :invitee
 
   class << self
     def from_google_id_token(token, refresh_token: nil, expires_at: nil)
-      provider = "google"
+      provider = Identity::PROVIDER_GOOGLE
       email, first_name, last_name, uid = token.values_at("email", "given_name", "family_name", "sub")
       email&.downcase!
 

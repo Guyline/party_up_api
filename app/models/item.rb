@@ -41,6 +41,16 @@ class Item < ApplicationRecord
   has_many :versions,
     inverse_of: :item
 
+  has_many :plays,
+    inverse_of: :item
+  has_many :meetups,
+    through: :plays,
+    source: :meetup
+  has_many :play_proposers,
+    -> { distinct },
+    through: :plays,
+    source: :proposer
+
   scope :held_by_user, ->(user) {
     joins(:copies)
       .where(

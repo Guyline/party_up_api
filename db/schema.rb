@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_203410) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
   create_table "copies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "asking_currency", limit: 3
     t.integer "asking_price_cents"
@@ -203,6 +203,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_203410) do
     t.index ["updated_at"], name: "index_ownerships_on_updated_at"
   end
 
+  create_table "plays", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "copy_id"
+    t.datetime "created_at", null: false
+    t.integer "familiarity", unsigned: true
+    t.bigint "holder_id"
+    t.bigint "item_id", null: false
+    t.bigint "meetup_id", null: false
+    t.bigint "primary_instructor_id"
+    t.integer "priority", unsigned: true
+    t.bigint "proposer_id", null: false
+    t.text "proposer_notes"
+    t.string "public_id"
+    t.datetime "updated_at", null: false
+    t.boolean "was_played"
+    t.index ["copy_id"], name: "index_plays_on_copy_id"
+    t.index ["holder_id"], name: "index_plays_on_holder_id"
+    t.index ["item_id"], name: "index_plays_on_item_id"
+    t.index ["meetup_id", "item_id"], name: "index_plays_on_meetup_id_and_item_id", unique: true
+    t.index ["primary_instructor_id"], name: "index_plays_on_primary_instructor_id"
+    t.index ["proposer_id"], name: "index_plays_on_proposer_id"
+    t.index ["public_id"], name: "index_plays_on_public_id", unique: true
+  end
+
   create_table "user_locations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "discarded_at"
@@ -272,6 +295,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_203410) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "ownerships", "copies"
   add_foreign_key "ownerships", "users", column: "owner_id"
+  add_foreign_key "plays", "copies"
+  add_foreign_key "plays", "items"
+  add_foreign_key "plays", "meetups"
+  add_foreign_key "plays", "users", column: "holder_id"
+  add_foreign_key "plays", "users", column: "primary_instructor_id"
+  add_foreign_key "plays", "users", column: "proposer_id"
   add_foreign_key "user_locations", "locations"
   add_foreign_key "user_locations", "users"
   add_foreign_key "versions", "items"

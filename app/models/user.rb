@@ -100,6 +100,14 @@ class User < ApplicationRecord
     class_name: Invite.name.to_s,
     inverse_of: :invitee
 
+  #########
+  # Plays #
+  #########
+
+  has_many :proposed_plays,
+    class_name: Play.name.to_s,
+    source: :proposer
+
   class << self
     def from_google_id_token(token, refresh_token: nil, expires_at: nil)
       provider = Identity::PROVIDER_GOOGLE

@@ -26,6 +26,12 @@ class Meetup < ApplicationRecord
     through: :invites,
     source: :inviter
 
+  has_many :plays,
+    class_name: Play.name.to_s
+  has_many :items,
+    through: :plays,
+    source: :item
+
   validates :exclusivity,
     inclusion: {
       in: EXCLUSIVITIES

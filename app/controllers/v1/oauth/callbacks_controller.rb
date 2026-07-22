@@ -1,4 +1,6 @@
 class V1::Oauth::CallbacksController < V1::ApplicationController
+  include V1::Concerns::HandlesAccessTokens
+
   skip_before_action :doorkeeper_authorize!,
     only: [
       :google
@@ -14,22 +16,8 @@ class V1::Oauth::CallbacksController < V1::ApplicationController
     }
 
     user = User.from_google_id_token(id_token, refresh_token:, expires_at:)
-    expires_in = Doorkeeper.config.access_token_expires_in
+    access_token = find_or_create_token(user)
 
-    access_token = Oauth::AccessToken.find_or_create_for(
-      application: doorkeeper_token&.application,
-      expires_in: (expires_in == Float::INFINITY) ? nil : expires_in,
-      resource_owner: user,
-      scopes: "",
-      use_refresh_token: Doorkeeper.config.refresh_token_enabled?
-    )
-
-    render json: {
-      access_token: access_token.token,
-      created_at: access_token.created_at,
-      expires_in: access_token.expires_in,
-      refresh_token: access_token.refresh_token,
-      token_type: "Bearer"
-    }
+    render_response(access_token)
   end
 end

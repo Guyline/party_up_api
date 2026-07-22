@@ -545,8 +545,9 @@ Doorkeeper::JWT.configure do
         .first
     end
 
+    application = opts[:application]
     token = {
-      aud: opts.dig(:application, :uid),
+      aud: application&.uid,
       iat: Time.current.utc.to_i,
       iss: "Party Up API",
       jti: SecureRandom.uuid,
@@ -562,4 +563,9 @@ Doorkeeper::JWT.configure do
     end
     token
   end
+end
+
+require "access_token_response"
+Rails.application.config.to_prepare do
+  Doorkeeper::OAuth::TokenResponse.send :prepend, AccessTokenResponse
 end

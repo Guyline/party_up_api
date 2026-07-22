@@ -4,7 +4,8 @@ module Oauth
 
     belongs_to :resource_owner,
       class_name: "User",
-      inverse_of: :access_tokens
+      inverse_of: :access_tokens,
+      optional: true
 
     # JSON representation of the Access Token instance.
     #

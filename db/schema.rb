@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_22_005505) do
   create_table "copies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "asking_currency", limit: 3
     t.integer "asking_price_cents"
@@ -136,6 +136,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
     t.integer "invites_count", default: 0, null: false, unsigned: true
     t.boolean "is_public", default: false
     t.bigint "location_id"
+    t.integer "max_attendees_count", unsigned: true
+    t.integer "min_attendees_count", unsigned: true
     t.string "public_id"
     t.datetime "published_at"
     t.datetime "starts_at"
@@ -203,7 +205,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
     t.index ["updated_at"], name: "index_ownerships_on_updated_at"
   end
 
-  create_table "plays", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "proposals", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "copy_id"
     t.datetime "created_at", null: false
     t.integer "familiarity", unsigned: true
@@ -216,14 +218,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
     t.text "proposer_notes"
     t.string "public_id"
     t.datetime "updated_at", null: false
-    t.boolean "was_played"
-    t.index ["copy_id"], name: "index_plays_on_copy_id"
-    t.index ["holder_id"], name: "index_plays_on_holder_id"
-    t.index ["item_id"], name: "index_plays_on_item_id"
-    t.index ["meetup_id", "item_id"], name: "index_plays_on_meetup_id_and_item_id", unique: true
-    t.index ["primary_instructor_id"], name: "index_plays_on_primary_instructor_id"
-    t.index ["proposer_id"], name: "index_plays_on_proposer_id"
-    t.index ["public_id"], name: "index_plays_on_public_id", unique: true
+    t.index ["copy_id"], name: "index_proposals_on_copy_id"
+    t.index ["holder_id"], name: "index_proposals_on_holder_id"
+    t.index ["item_id"], name: "index_proposals_on_item_id"
+    t.index ["meetup_id", "item_id"], name: "index_proposals_on_meetup_id_and_item_id", unique: true
+    t.index ["primary_instructor_id"], name: "index_proposals_on_primary_instructor_id"
+    t.index ["proposer_id"], name: "index_proposals_on_proposer_id"
+    t.index ["public_id"], name: "index_proposals_on_public_id", unique: true
   end
 
   create_table "user_locations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -295,12 +296,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_211755) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "ownerships", "copies"
   add_foreign_key "ownerships", "users", column: "owner_id"
-  add_foreign_key "plays", "copies"
-  add_foreign_key "plays", "items"
-  add_foreign_key "plays", "meetups"
-  add_foreign_key "plays", "users", column: "holder_id"
-  add_foreign_key "plays", "users", column: "primary_instructor_id"
-  add_foreign_key "plays", "users", column: "proposer_id"
+  add_foreign_key "proposals", "copies"
+  add_foreign_key "proposals", "items"
+  add_foreign_key "proposals", "meetups"
+  add_foreign_key "proposals", "users", column: "holder_id"
+  add_foreign_key "proposals", "users", column: "primary_instructor_id"
+  add_foreign_key "proposals", "users", column: "proposer_id"
   add_foreign_key "user_locations", "locations"
   add_foreign_key "user_locations", "users"
   add_foreign_key "versions", "items"

@@ -6,12 +6,7 @@ class User < ApplicationRecord
 
   self.public_id_prefix = "usr"
 
-  devise :database_authenticatable,
-    :recoverable,
-    :registerable,
-    :validatable
-  # devise :omniauthable,
-  #  omniauth_providers: [:google]
+  has_secure_password
 
   has_many :access_grants,
     class_name: Doorkeeper.config.access_grant_class.to_s,
@@ -100,13 +95,21 @@ class User < ApplicationRecord
     class_name: Invite.name.to_s,
     inverse_of: :invitee
 
-  #########
-  # Plays #
-  #########
+  #############
+  # Proposals #
+  #############
 
-  has_many :proposed_plays,
-    class_name: Play.name.to_s,
-    source: :proposer
+  has_many :proposals,
+    class_name: Proposal.name.to_s,
+    inverse_of: :proposer
+
+  def password_digest
+    encrypted_password
+  end
+
+  def password_digest=(value)
+    self.encrypted_password = value
+  end
 
   class << self
     def from_google_id_token(token, refresh_token: nil, expires_at: nil)

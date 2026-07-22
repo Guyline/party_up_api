@@ -12,7 +12,7 @@ application = Oauth::Application.where(name: "party_up_ui").first_or_create
 Rails.logger.debug "Application:"
 Rails.logger.debug { "  id: #{application.id}" }
 Rails.logger.debug { "  client_id: #{application.uid}" }
-Rails.logger.debug { "  clent_secret: #{application.plaintext_secret}" }
+Rails.logger.debug { "  client_secret: #{application.plaintext_secret}" }
 
 user_attribute_sets = [
   {

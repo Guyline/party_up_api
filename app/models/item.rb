@@ -41,14 +41,14 @@ class Item < ApplicationRecord
   has_many :versions,
     inverse_of: :item
 
-  has_many :plays,
+  has_many :proposals,
     inverse_of: :item
-  has_many :meetups,
-    through: :plays,
+  has_many :proposed_meetups,
+    through: :proposals,
     source: :meetup
-  has_many :play_proposers,
+  has_many :proposers,
     -> { distinct },
-    through: :plays,
+    through: :proposals,
     source: :proposer
 
   scope :held_by_user, ->(user) {

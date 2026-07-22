@@ -26,10 +26,10 @@ class Meetup < ApplicationRecord
     through: :invites,
     source: :inviter
 
-  has_many :plays,
-    class_name: Play.name.to_s
-  has_many :items,
-    through: :plays,
+  has_many :proposals,
+    class_name: Proposal.name.to_s
+  has_many :proposed_items,
+    through: :proposals,
     source: :item
 
   validates :exclusivity,

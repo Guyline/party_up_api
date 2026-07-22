@@ -2,18 +2,12 @@ class V1::ApplicationController < ApplicationController
   before_action :skip_session
   before_action :doorkeeper_authorize!
   before_action :set_includes,
-    only: [
-      :index
-    ]
+    only: [:index]
   before_action :set_pagination_params,
-    only: [
-      :index
-    ]
+    only: [:index]
 
   after_action :set_count_header,
-    only: [
-      :index
-    ]
+    only: [:index]
 
   def index
     @resources = index_query

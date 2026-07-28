@@ -43,6 +43,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :meetups do
+      scope module: :meetup do
+        resources :proposals, only: [:index, :create]
+      end
+    end
+
     resources :users, only: %i[index show] do
       scope module: :user do
         resources :copies, only: [:index]

@@ -48,6 +48,35 @@ class ApplicationRecord < ActiveRecord::Base
     def base_readable_type
       base_class.name.demodulize.underscore
     end
+
+    ##
+    # Define dynamic scoped `belongs_to` association that only selects `id` and `public_id`
+    #   from associated records
+    # TODO: Allow this to work when existing scope is already provided on base definition
+    # TODO: Ensure `:class_name` is specified in options if not provided
+    #
+    # def belongs_to(name, scope = nil, **options)
+    #   super
+    #   if scope.nil? && !options[:class_name].nil?
+    #     super(
+    #       (name.to_s + "_relationship").to_sym,
+    #       -> { select(:id, :public_id) },
+    #       **options
+    #     )
+    #   end
+    # end
+
+    # def has_many(name, scope = nil, **options, &extension)
+    #   super
+    #   if scope.nil? && !options[:class_name].nil?
+    #     super(
+    #       (name.to_s + "_relationship").to_sym,
+    #       -> { select(:id, :public_id) },
+    #       **options,
+    #       &extension
+    #     )
+    #   end
+    # end
   end
 
   delegate :readable_type, :base_readable_type, to: :class

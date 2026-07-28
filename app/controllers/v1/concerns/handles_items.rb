@@ -10,5 +10,9 @@ module V1::Concerns::HandlesItems
         "expansions" => :expansions
       }
     end
+
+    def serializer
+      ItemSerializer
+    end
   end
 end

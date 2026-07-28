@@ -1,4 +1,4 @@
-class Play < ApplicationRecord
+class Proposal < ApplicationRecord
   include HasPublicId
   include StripsAttributes
 
@@ -75,4 +75,24 @@ class Play < ApplicationRecord
       maximum: 20_000,
       minimum: 1
     }
+
+  delegate :public_id,
+    to: :copy,
+    prefix: true
+  delegate :public_id,
+    to: :holder,
+    prefix: true
+  delegate :name,
+    :public_id,
+    to: :item,
+    prefix: true
+  delegate :public_id,
+    to: :meetup,
+    prefix: true
+  delegate :public_id,
+    to: :primary_instructor,
+    prefix: true
+  delegate :public_id,
+    to: :proposer,
+    prefix: true
 end

@@ -30,5 +30,9 @@ module V1::Concerns::HandlesCopies
         "version" => :version
       }
     end
+
+    def serializer
+      CopySerializer
+    end
   end
 end

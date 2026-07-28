@@ -5,30 +5,32 @@ module V1::Concerns::HandlesMeetups
     protected
 
     def meetup_params
-      params.expect(
-        meetup: %i[
-          asking_currency
-          asking_price
-          condition
-          holder_id
-          is_borrowable
-          is_playable
-          is_purchaseable
-          is_tradeable
-          version_id
-        ]
-      )
+      params.require(:data)
+        .require(:attributes)
+        .permit(
+          :description,
+          :ends_at,
+          :exclusivity,
+          :is_public,
+          :status,
+          :max_attendees_count,
+          :min_attendees_count,
+          :starts_at
+        )
     end
 
     def valid_includes
       {
-        "holder" => :holder,
-        "item" => :item,
+        "attendees" => :attendees,
+        "creator" => :creator,
+        "invites" => :invites,
         "location" => :location,
-        "ownerships" => :ownerships,
-        "ownerships.owner" => :owners,
-        "version" => :version
+        "proposals" => :proposals
       }
+    end
+
+    def serializer
+      MeetupSerializer
     end
   end
 end

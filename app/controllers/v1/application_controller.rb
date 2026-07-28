@@ -1,6 +1,6 @@
 class V1::ApplicationController < ApplicationController
   before_action :skip_session
-  before_action :doorkeeper_authorize!
+  # before_action :doorkeeper_authorize!
   before_action :set_includes,
     only: [:index]
   before_action :set_pagination_params,
@@ -15,6 +15,7 @@ class V1::ApplicationController < ApplicationController
       .per(@per_page)
       .order({@sort => @order})
       .includes(valid_includes.values)
+    render json: serializer.new(@resources, is_collection: true).serializable_hash
   end
 
   protected
@@ -47,6 +48,14 @@ class V1::ApplicationController < ApplicationController
 
   def index_query
     raise NotImplementedError
+  end
+
+  def serializer
+    raise NotImplementedError
+  end
+
+  def resource_params
+    params.require(:data).require(:attributes)
   end
 
   private
@@ -126,7 +135,7 @@ class V1::ApplicationController < ApplicationController
   end
 
   def current_user
-    # @current_user ||= User.where(email: "guyline82@gmail.com").first
-    @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
+    @current_user ||= User.where(email: "guyline82@gmail.com").first
+    # @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
   end
 end

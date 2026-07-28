@@ -1,9 +1,14 @@
 class V1::MeetupsController < V1::ApplicationController
-  def create
-    @meetup = index_query.create!(meetup_params)
+  include V1::Concerns::HandlesMeetups
 
-    render "v1/meetups/show"
+  def create
+    @meetup = Meetup.create!(meetup_params.merge(creator: current_user))
+    render json: MeetupSerializer.new(@meetup).serializable_hash
   end
 
-  
+  protected
+
+  def index_query
+    Meetup
+  end
 end

@@ -96,6 +96,14 @@ class Item < ApplicationRecord
     type&.demodulize&.underscore
   end
 
+  def expansion_public_ids
+    expansions.pluck(:public_id)
+  end
+
+  def expandable_public_ids
+    expandables.pluck(:public_id)
+  end
+
   class << self
     def from_bgg_thing(thing, with_expansions: false, with_expandables: false)
       raise ArgumentError, "Expected instance of BoardGameGeek::Thing" unless thing.is_a?(BoardGameGeek::Thing)

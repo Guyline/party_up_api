@@ -1,15 +1,16 @@
-module V1::Concerns::HandlesUsers
+module V1::Concerns::HandlesProposals
   extend ActiveSupport::Concern
 
   included do
     protected
 
-    def user_params
+    def proposal_params
       params.require(:data)
         .require(:attributes)
         .permit(
-          :first_name,
-          :last_name
+          :familiarity,
+          :priority,
+          :proposer_notes
         )
     end
 
@@ -18,7 +19,7 @@ module V1::Concerns::HandlesUsers
     end
 
     def serializer
-      UserSerializer
+      ProposalSerializer
     end
   end
 end

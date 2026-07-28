@@ -28,12 +28,23 @@ class Invite < ApplicationRecord
     inverse_of: :received_invites
   belongs_to :inviter,
     class_name: User.name.to_s,
-    inverse_of: :sent_invites
+    inverse_of: :sent_invites,
+    optional: true
 
   validates :meetup,
     uniqueness: {
       scope: :invitee
     }
+
+  delegate :public_id,
+    to: :invitee_id,
+    prefix: true
+  delegate :public_id,
+    to: :inviter,
+    prefix: true
+  delegate :public_id,
+    to: :meetup,
+    prefix: true
 
   def rejected?
     !rejected_at.nil?

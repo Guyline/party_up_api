@@ -18,8 +18,9 @@ gem "mysql2", "~> 0.5"
 gem "puma", "~> 7.0"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder", "~> 2.14"
+# gem "jbuilder", "~> 2.14"
 # gem "jsonapi-resources", "~> 0.10"
+gem "jsonapi-serializer", "~> 2.2"
 
 # Use Redis adapter to run Action Cable in productionn
 # gem "redis", ">= 4.0.1"
@@ -52,7 +53,6 @@ gem "googleauth", "~> 1.14"
 gem "countries", "~> 8.0"
 gem "csv", "~> 3.3"
 gem "discard", "~> 1.4"
-gem "jsonapi-serializer", "~> 2.2"
 gem "kaminari", "~> 1.2"
 gem "money-rails", "~> 1.15"
 gem "nanoid", "~> 2.0"
